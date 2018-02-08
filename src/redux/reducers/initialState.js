@@ -1,3 +1,4 @@
 export default {
-	seeker: {}
+	seeker: {},
+	shared:{}
 };

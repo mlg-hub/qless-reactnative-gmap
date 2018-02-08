@@ -10,25 +10,37 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const width = Dimensions.get('window').width;
 
-const ResultPlacesComponent = () => {
+const ResultPlacesComponent = ({
+	placesResults,
+ 	getPlaceLocation, 
+	storeSelectedPlaceName 
+	}) => {
 
-	function displaResults(place){
-		return (
-			<View>
-
-			</View>
-		);
+	function handlePlaceLocation(place_id, place_name){
+		// dispatch an action to handle the placeID
+		getPlaceLocation(place_id);
+		storeSelectedPlaceName(place_name)
 	}
-
 	return (
 		<View style={styles.resultList}>
+			<List>
 			<FlatList
-				data={[
-					{title: 'Title Text', key: 'item1', icon:'search'},
-					{title: 'Title Text', key: 'item1', icon:'search'},
-					{title: 'Title Text', key: 'item1', icon:'search'}]}
-				renderItem={({item}) => <ListItem title={item.title} leftIcon={{name: item.icon}} subtitle={item.title}/>}
+				data={placesResults}
+				renderItem={
+					({item, index}) => {
+						return (
+							<ListItem 
+							onPress={()=> handlePlaceLocation(item.placeID, item.primaryText)}
+							title={item.primaryText} 
+							leftIcon={{name: 'search'}} 
+							subtitle={item.primaryText}
+							keyExtractor={(item, index) => item.placeID}
+							/>
+						)
+					}
+				}
 			/>
+			</List>
 		</View>
 	)
 }
