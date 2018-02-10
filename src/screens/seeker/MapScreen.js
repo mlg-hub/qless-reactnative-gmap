@@ -8,12 +8,13 @@ import * as mapActions from '../../redux/actions/mapAction';
 import MapComponent from '../../components/MapScreen/MapComponent';
 import FindPlaceComponent from '../../components/MapScreen/FindPlaceComponent';
 import ResultPlacesComponent from '../../components/MapScreen/ResultPlacesComponent';
+import FabComponent from '../../components/MapScreen/FabComponent';
 
 class MapScreen extends Component {
 	
 	_renderResultPlaceComponent(){
 		const {
-			places, 
+			places,
 			actions: {getPlaceLocation,storeSelectedPlaceName}
 		} = this.props;
 
@@ -26,17 +27,31 @@ class MapScreen extends Component {
 		}
 		return null;
 	}
+	_renderFabComponent(){
+		if(this.props.selectedLatLong.latitude){
+			return (
+				<FabComponent onPressAction={() => null}/>
+			)
+		}
+	}
 	render() {
+		const { 
+			actions:{ storeUserPosition, getGooglePlaces},
+			selectedPlaceName,
+			selectedLatLong
+			} = this.props;
 		return (
 			<View style={{ flex: 1}}>
 				<MapComponent 
-					storeUserPosition={this.props.actions.storeUserPosition}
+					storeUserPosition={storeUserPosition}
+					selectedLatLong={selectedLatLong}
 				/>
 				<FindPlaceComponent 
-					getGooglePlaces={this.props.actions.getGooglePlaces}
-					selectedPlaceName={this.props.selectedPlaceName}
+					getGooglePlaces={getGooglePlaces}
+					selectedPlaceName={selectedPlaceName}
 				/>
 				{this._renderResultPlaceComponent()}
+				{this._renderFabComponent()}
 			</View>
 		);
 	}
@@ -49,10 +64,11 @@ MapScreen.navigatorStyle = {
 	statusBarColor: 'rgba(0,0,0,0.3)'
 }
 function mapStateToProps(state){
+	const { places, selectedPlaceName} = state.seeker;
 	return {
-		places: state.seeker.places || [],
-		selectedPlace: state.seeker.selectedPlace,
-		selectedPlaceName: state.seeker.selectedPlaceName
+		places: places || [],
+		selectedLatLong: state.seeker.selectedPlace ? state.seeker.selectedPlace : {},
+		selectedPlaceName:selectedPlaceName
 	}
 }
 function mapDispatchToProps(dispatch) {

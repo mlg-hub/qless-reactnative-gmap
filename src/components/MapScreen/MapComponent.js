@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Animated, AnimatedRegion, Marker} from 'react-native-maps';
 import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -12,15 +12,32 @@ class MapComponent extends Component {
 		super();
 		this.state = {
 			region: {}
-				// latitude: -3.401554,
-				// longitude: 29.354072,
-				// latitudeDelta: LATITUDE_DELTA,
-				// longitudeDelta: LONGITUDE_DELTA
 		}
 	}
 
 	componentWillMount() {
 		this._getUserPosition();
+	}
+
+	shouldComponentUpdate(){
+		if(this.props.storeUserPosition){
+			return false;
+		}
+		if(this.props.selectedLatLong.latitude){
+			return true;
+		}
+		return false;
+	}
+	componentWillReceiveProps(nextProps){
+		console.log('this is the next props', nextProps);
+		if(this.props.selectedLatLong.latitude){
+
+			  this.setState({region: nextProps.selectedLatLong })
+			// if(this.props.selectedLatLong !== nextProps.selectedLatLong){
+			// 	// const { latitude, longitude} = nextProps.selectedLatLong;
+			// 	console.log(this.state);
+			// }
+		}
 	}
 
 	 _getUserPosition() {
@@ -37,6 +54,10 @@ class MapComponent extends Component {
 		)
 	}
 
+	_onRegionChange(region){
+		console.log(region);
+	}
+
 	_renderMap(){
 		if(!this.state.region.latitude) {
 			return (
@@ -48,21 +69,20 @@ class MapComponent extends Component {
 			const { latitude, longitude } = this.state.region;
 			// const{ latitude, longitude} = this.state.test;
 			
-			region = {
-				latitude: latitude,
-				longitude: longitude,
+			region = new AnimatedRegion({
+				latitude,
+				longitude,
 				latitudeDelta: LATITUDE_DELTA,
 				longitudeDelta: LONGITUDE_DELTA,
-			};
-		
+			});
 			return (
 				<View style={styles.container} >
-					<MapView
+					<Animated
 						provider={MapView.PROVIDER_GOOGLE}
 						style={styles.map}
 						region={region}
-					>
-					</MapView>
+						onRegionChange={(region)=>this._onRegionChange(region)}
+					/>
 				</View>
 			)
 		}

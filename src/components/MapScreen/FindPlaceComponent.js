@@ -14,8 +14,15 @@ class FindPlaceComponent extends Component {
 		
 	}
 
+	// shouldComponentUpdate(nextProps, nextState){
+	// 	console.log(this.props.selectedPlaceName)
+	// 	console.log(nextProps, nextState);
+	// 	return true;
+	// }
+
 	componentWillReceiveProps(nextProps){
-		if(nextProps.selectedPlaceName){
+		console.log(this.props.selectedPlaceName, nextProps.selectedPlaceName);
+		if(this.props.selectedPlaceName !== nextProps.selectedPlaceName){
 			this.setState({ inputValue: nextProps.selectedPlaceName})
 		}
 	}

@@ -25,6 +25,7 @@ const ResultPlacesComponent = ({
 		<View style={styles.resultList}>
 			<List>
 			<FlatList
+				keyExtractor = {(item, index) => item.placeID}
 				data={placesResults}
 				renderItem={
 					({item, index}) => {
