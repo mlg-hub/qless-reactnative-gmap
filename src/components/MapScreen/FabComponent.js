@@ -1,14 +1,18 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
-const FabComponent = ({onPressAction}) => {
+const FabComponent = ({ onPressAction }) => {
+
+	function handleOnPress() {
+		onPressAction();
+	}
 	return (
 		<View >
 			<Button 
 				buttonStyle={styles.fabContainer}
 				textStyle={styles.btnText}
-				onPress={onPressAction} 
+				onPress={handleOnPress} 
 				containerStyle={styles.container}
 				title="Get Info"
 			/>	

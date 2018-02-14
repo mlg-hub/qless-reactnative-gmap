@@ -9,6 +9,8 @@ import com.reactnativenavigation.NavigationApplication;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 
 
 import java.util.Arrays;
@@ -45,7 +47,9 @@ public class MainApplication extends NavigationApplication {
     return Arrays.<ReactPackage>asList(
             new MapsPackage(),
             new VectorIconsPackage(),
-            new RNGooglePlacesPackage()
+            new RNGooglePlacesPackage(),
+            new LinearGradientPackage(),
+            new RNSpinkitPackage()
     );
   }
 

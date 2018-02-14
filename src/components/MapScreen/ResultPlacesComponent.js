@@ -28,7 +28,7 @@ const ResultPlacesComponent = ({
 				keyExtractor = {(item, index) => item.placeID}
 				data={placesResults}
 				renderItem={
-					({item, index}) => {
+					({ item, index }) => {
 						return (
 							<ListItem 
 							onPress={()=> handlePlaceLocation(item.placeID, item.primaryText)}
@@ -49,10 +49,11 @@ const ResultPlacesComponent = ({
 const styles = StyleSheet.create({
 	resultList: {
 		position: 'absolute',
-		top: 75,
+		top: 55,
 		flex:1,
-		width:width,
-		backgroundColor: '#fff'
+		width,
+		backgroundColor: '#fff',
+		zIndex: 900
 	},
 	displayResults: {
 		height:60,

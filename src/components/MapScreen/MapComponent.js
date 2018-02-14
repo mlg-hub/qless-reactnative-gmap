@@ -3,62 +3,61 @@ import MapView, { Animated, AnimatedRegion, Marker} from 'react-native-maps';
 import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-const Aspect_Ratio = width/height;
+const ASPECT_RATION = width / height;
 const LATITUDE_DELTA = 0.0422;
-const LONGITUDE_DELTA = Aspect_Ratio * LATITUDE_DELTA;
+const LONGITUDE_DELTA = ASPECT_RATION * LATITUDE_DELTA;
 
 class MapComponent extends Component {
-	constructor(){
+	constructor() {
 		super();
 		this.state = {
 			region: {}
-		}
+		};
 	}
 
 	componentWillMount() {
 		this._getUserPosition();
 	}
 
-	shouldComponentUpdate(){
-		if(this.props.storeUserPosition){
-			return false;
-		}
-		if(this.props.selectedLatLong.latitude){
-			return true;
-		}
-		return false;
+	componentDidMount() {
+		// const socket = io('https://afternoon-shore-67188.herokuapp.com', { 
+		// 					jsonp: false });
+		// socket.on('connect', () => {
+		// 	console.log('conneted');
+		// });
 	}
 	componentWillReceiveProps(nextProps){
-		console.log('this is the next props', nextProps);
-		if(this.props.selectedLatLong.latitude){
+		// console.log('this is the next props', nextProps);
 
-			  this.setState({region: nextProps.selectedLatLong })
-			// if(this.props.selectedLatLong !== nextProps.selectedLatLong){
-			// 	// const { latitude, longitude} = nextProps.selectedLatLong;
-			// 	console.log(this.state);
-			// }
+		if (this.props.selectedLatLong.latitude) {
+
+			  this.setState({ region: nextProps.selectedLatLong });
+		// 	// if(this.props.selectedLatLong !== nextProps.selectedLatLong){
+		// 	// 	// const { latitude, longitude} = nextProps.selectedLatLong;
+		// 	// 	console.log(this.state);
+		// 	// }
 		}
 	}
-
+	//
 	 _getUserPosition() {
 		console.log('getting the user position ready!');
-
+		
 		navigator.geolocation.getCurrentPosition((position) => {
-			this.setState({ region: position.coords});
-			console.log('the state is ', this.state);
-			this.props.storeUserPosition({ latitude, longitude} = this.state.region)
-			console.log('position was set');	
-		},
-		(error) => console.log(error.message),
-		{enableHighAccuracy: true, timeout:50000, maximumAge: 2000}
-		)
+				this.setState({ region: position.coords});
+				console.log('the state is ', this.state);
+				this.props.storeUserPosition({ latitude, longitude} = this.state.region)
+				console.log('position was set');	
+			},
+			(error) => console.log(error.message),
+			{enableHighAccuracy: true, timeout:50000, maximumAge: 2000}
+		);
 	}
 
 	_onRegionChange(region){
 		console.log(region);
 	}
 
-	_renderMap(){
+	_renderMap() {
 		if(!this.state.region.latitude) {
 			return (
 			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -69,7 +68,7 @@ class MapComponent extends Component {
 			const { latitude, longitude } = this.state.region;
 			// const{ latitude, longitude} = this.state.test;
 			
-			region = new AnimatedRegion({
+			const region = new AnimatedRegion({
 				latitude,
 				longitude,
 				latitudeDelta: LATITUDE_DELTA,
@@ -81,7 +80,7 @@ class MapComponent extends Component {
 						provider={MapView.PROVIDER_GOOGLE}
 						style={styles.map}
 						region={region}
-						onRegionChange={(region)=>this._onRegionChange(region)}
+						onRegionChange={(reg) => this._onRegionChange(reg)}
 					/>
 				</View>
 			)
