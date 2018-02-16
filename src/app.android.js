@@ -12,6 +12,7 @@ registerScreens(store, Provider);
 Navigation.startSingleScreenApp({
 	screen: {
 		screen: 'qless.MapScreen',
+		title: 'Seeking',
 		leftButtons: [
 			{
 				id: 'sideMenu'

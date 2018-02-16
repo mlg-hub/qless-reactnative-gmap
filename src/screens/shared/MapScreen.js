@@ -8,21 +8,53 @@ import MapComponent from '../../components/MapScreen/MapComponent';
 import FindPlaceComponent from '../../components/MapScreen/FindPlaceComponent';
 import ResultPlacesComponent from '../../components/MapScreen/ResultPlacesComponent';
 import FabComponent from '../../components/MapScreen/FabComponent';
+import { Text } from 'react-native-elements';
 
 class MapScreen extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			// isSeeker: true,
+			// isGiver: false,
+			currentUser: 'Seeker'
+		};
+	}
+
+	componentWillMount() {
+		this.props.actions.isUser('Seeker');
+	}
+	componentWillReceiveProps(nextProps) {
+		console.log('mapscreen', nextProps);
+
+		if (this.state.currentUser !== nextProps.currentUser) {
+			this.setState({ currentUser: nextProps.currentUser });
+		}
+
+		/*if (!this.state.isGiver) {
+			if (nextProps.isGiverOn) {
+				this.setState({ isSeeker: false, isGiver: true });
+			}
+		}
+		if (!this.state.isSeeker) {
+			if (nextProps.isSeekerOn) {
+				this.setState({ isGiver: false, isSeeker: true });
+			}
+		}*/
+	}
 	
-	_renderResultPlaceComponent(){
+	_renderResultPlaceComponent() {
 		const {
 			places,
 			actions: { getPlaceLocation, storeSelectedPlaceName }
 		} = this.props;
 
-		if(places.length !== 0) {
-			return <ResultPlacesComponent 
-				placesResults={places}
-				getPlaceLocation={getPlaceLocation}
-				storeSelectedPlaceName={storeSelectedPlaceName}
-			 />;
+		if (places.length !== 0) {
+			return (<ResultPlacesComponent 
+					placesResults={places}
+					getPlaceLocation={getPlaceLocation}
+					storeSelectedPlaceName={storeSelectedPlaceName}
+			/>);
 		}
 		return null;
 	}
@@ -69,14 +101,16 @@ class MapScreen extends Component {
 			);
 		}
 	}
-	render() {
+
+	_renderSeekerView() {
 		const { 
 			actions: { storeUserPosition },
 			selectedLatLong
 			} = this.props;
 		return (
 			<View style={{ flex: 1}}>
-				<MapComponent 
+				<MapComponent
+					user={this.state.currentUser} 
 					storeUserPosition={storeUserPosition}
 					selectedLatLong={selectedLatLong}
 				/>
@@ -86,25 +120,50 @@ class MapScreen extends Component {
 			</View>
 		);
 	}
+	_renderGiverView() {
+		const { actions: { storeUserPosition } } = this.props;
+		return (
+			<View style={{ flex: 1 }}>
+				<MapComponent
+					user={this.state.currentUser}
+					storeUserPosition={storeUserPosition}
+				/>
+				<Text style={{ position: 'absolute', top: 70 }}> Morisho is not you!!</Text>
+			</View>
+		);
+	}
+
+	_renderViews() {
+		if (this.state.currentUser === 'Seeker') {
+			return this._renderSeekerView();
+		}
+		return this._renderGiverView();
+	}
+
+	render() {
+		return this._renderViews();
+	}
 }
-
-
 
 MapScreen.navigatorStyle = {
-	navBarHidden: true,
-	navBarBackgroundColor: 'transparent',
-	navBarTextColor: 'transparent',
-	navBarButtonColor: '#0a0a0a',
-	statusBarColor: 'rgba(0,0,0,0.3)'
-}
+	// navBarHidden: true,
+	statusBarColor: 'rgba(0,0,0,0.3)',
+	statusBarTextColorScheme: 'light',
+	navigationBarColor: 'black',
+	navBarBackgroundColor: '#0a0a0a',
+	navBarTextColor: 'white',
+	navBarButtonColor: 'white'
+};
+
 function mapStateToProps(state){
 	const { places, selectedPlaceName } = state.seeker;
 	return {
 		places: places || [],
 		selectedLatLong: state.seeker.selectedPlace ? state.seeker.selectedPlace : {},
 		selectedPlaceName,
-		userPosition: state.shared.userPosition
-	}
+		userPosition: state.shared.userPosition,
+		currentUser: state.shared.currentUser
+	};
 }
 function mapDispatchToProps(dispatch) {
 	return {

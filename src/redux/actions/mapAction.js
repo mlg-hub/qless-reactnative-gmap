@@ -1,7 +1,16 @@
 import RNGooglePlaces from 'react-native-google-places';
-import axios from 'axios';
-import * as types from './actionsType';
+// import axios from 'axios';
+import * as types from './types/mapActionsTypes';
 
+
+// store the current user either seeker or giver
+
+export function isUser(user) {
+	return {
+		type: types.CURRENT_USER,
+		payload: user
+	};
+}
 // store the user position to the global state
 export function storeUserPosition(userPosition) {
 	console.log('action to store position called');

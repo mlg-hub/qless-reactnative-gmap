@@ -40,7 +40,7 @@ class FindPlaceComponent extends Component {
 		const backgroundColor = this._typingOn();
 		const stylesIN = {
 			position: 'absolute',
-			top: 0,	
+			top: 5,	
 			flex: 1,
 			// flexDirection: 'row',
 			justifyContent: 'center',
@@ -67,7 +67,7 @@ class FindPlaceComponent extends Component {
 				style={styles.input}
 				onChangeText={(text) => this._handleTextInput(text)}
 				/>
-				<Icon style={styles.icon} name="menu" size={25} onPress={() => this.props.toggleDrawer()} />
+				{/* <Icon style={styles.icon} name="menu" size={25} onPress={() => this.props.toggleDrawer()} /> */}
 			</View>
 		)
 }
@@ -91,18 +91,18 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		backgroundColor: 'rgba(0,0,0,0.4)',
 		borderRadius: 40,
-		width: width - 50,
-		marginLeft: 45
+		// width: width - 50,
+		// marginLeft: 45
 	},
 	icon: {
 		position: 'absolute',
 		color: 'black',
-		left: 18
+		left: 10
 	},
 	iconLeft: {
 		position: 'absolute',
 		color: 'red',
-		right: 18
+		right: 10
 	}
 });
 

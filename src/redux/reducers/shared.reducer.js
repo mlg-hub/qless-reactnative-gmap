@@ -1,9 +1,8 @@
-import * as types from '../actions/actionsType';
+import * as types from '../actions/types/mapActionsTypes';
 import initialState from './initialState';
-import update from 'immutability-helper';
 
 export default function (state = initialState.shared, action) {
-	switch (action.type){
+	switch (action.type) {
 		case types.STORE_USER_POSITION:
 		return {
 			...state,
@@ -11,8 +10,14 @@ export default function (state = initialState.shared, action) {
 				latitude: action.payload.latitude,
 				longitude: action.payload.longitude
 			}
-		}
+		};
+		case types.CURRENT_USER:
+			return {
+				...state,
+				currentUser: action.payload
+			};
 		default :
 			return state;
 	}
 }
+

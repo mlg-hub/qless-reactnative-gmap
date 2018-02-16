@@ -1,4 +1,4 @@
-import * as types from '../../actions/actionsType';
+import * as types from '../../actions/types/mapActionsTypes';
 import initialState from '../initialState';
 
 export default function (state = initialState.seeker, action) {

@@ -1,4 +1,4 @@
-import * as types from '../../actions/actionsType';
+import * as types from '../../actions/types/mapActionsTypes';
 import initialeState from '../initialState';
 
 export default function (state = initialeState.giver, action) {

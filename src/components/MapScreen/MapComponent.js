@@ -11,31 +11,25 @@ class MapComponent extends Component {
 	constructor() {
 		super();
 		this.state = {
-			region: {}
+			region: {},
+			user: 'Seeker'
 		};
 	}
 
 	componentWillMount() {
 		this._getUserPosition();
 	}
-
 	componentDidMount() {
-		// const socket = io('https://afternoon-shore-67188.herokuapp.com', { 
-		// 					jsonp: false });
-		// socket.on('connect', () => {
-		// 	console.log('conneted');
-		// });
+		console.log(this.props.giver);
 	}
-	componentWillReceiveProps(nextProps){
-		// console.log('this is the next props', nextProps);
 
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
 		if (this.props.selectedLatLong.latitude) {
-
 			  this.setState({ region: nextProps.selectedLatLong });
-		// 	// if(this.props.selectedLatLong !== nextProps.selectedLatLong){
-		// 	// 	// const { latitude, longitude} = nextProps.selectedLatLong;
-		// 	// 	console.log(this.state);
-		// 	// }
+		}
+		if (this.state.user !== nextProps.user) {
+			this.setState({ user: nextProps.user });
 		}
 	}
 	//
@@ -53,9 +47,24 @@ class MapComponent extends Component {
 		);
 	}
 
+	_renderRequestsMarker() {
+		if (this.state.user === 'Giver') {
+			 // dispatch an action to fetch all the request data (lat , long)
+			//  const { latitude, longitude} = this.state.region;
+			 return (
+				 <Marker.Animated
+				 	coords={this.state.region}
+				 />
+			 );
+		}
+		return null;
+	}
+
 	_onRegionChange(region){
 		console.log(region);
 	}
+
+	
 
 	_renderMap() {
 		if(!this.state.region.latitude) {
@@ -63,17 +72,17 @@ class MapComponent extends Component {
 			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 				<ActivityIndicator size="large" color="#0000ff" />
 			</View>
-			)
-		}else {
-			const { latitude, longitude } = this.state.region;
-			// const{ latitude, longitude} = this.state.test;
-			
-			const region = new AnimatedRegion({
-				latitude,
-				longitude,
-				latitudeDelta: LATITUDE_DELTA,
-				longitudeDelta: LONGITUDE_DELTA,
-			});
+			);
+		}
+		const { latitude, longitude } = this.state.region;
+		// const{ latitude, longitude} = this.state.test;
+		
+		const region = new AnimatedRegion({
+			latitude,
+			longitude,
+			latitudeDelta: LATITUDE_DELTA,
+			longitudeDelta: LONGITUDE_DELTA,
+		});
 			return (
 				<View style={styles.container} >
 					<Animated
@@ -81,10 +90,11 @@ class MapComponent extends Component {
 						style={styles.map}
 						region={region}
 						onRegionChange={(reg) => this._onRegionChange(reg)}
-					/>
+					>
+					{this._renderRequestsMarker()}
+					</Animated>
 				</View>
-			)
-		}
+			);
 		// when the latitude is not set yet
 		
 	}
