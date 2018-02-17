@@ -22,7 +22,7 @@ class FindPlaceComponent extends Component {
 	componentWillReceiveProps(nextProps) {
 		console.log(this.props.selectedPlaceName, nextProps.selectedPlaceName);
 		if (this.props.selectedPlaceName !== nextProps.selectedPlaceName) {
-			this.setState({ inputValue: nextProps.selectedPlaceName });
+			this.setState({ inputValue: nextProps.selectedPlaceName }, () => console.log('hery morisho'));
 		}
 	}
 	_typingOn() {

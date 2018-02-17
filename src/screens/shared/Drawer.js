@@ -13,16 +13,20 @@ import { isUser } from '../../redux/actions/mapAction';
 
 class Drawer extends Component {
 
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
 			currentUser: 'Seeker'
-		}
+		};
+	}
+
+	componentWillMount() {
+		this.props.isUser(this.state.currentUser);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(this.state.currentUser !== nextProps.currentUser) {
-			this.setState({ currentUser: nextProps.currentUser});
+		if (this.state.currentUser !== nextProps.currentUser) {
+			this.setState({ currentUser: nextProps.currentUser });
 		}
 	}
 
@@ -48,13 +52,16 @@ class Drawer extends Component {
 	}
 
 	_openPage(user) {
-		const $this = this;
-		console.log('to giver');
-		this.props.actions.isUser(user);
-		setTimeout(() => {
-			$this._toggleDrawer();
-			$this._resetTo(user);
-		}, 800);
+		// const $this = this;
+		console.log('open page', user);
+
+		this.props.isUser(user);
+		this._toggleDrawer();
+		this._resetTo(user);
+		// setTimeout(() => {
+		// 	$this._toggleDrawer();
+		// 	$this._resetTo(user);
+		// }, 800);
 	}
 	render() {
 		const iconGiver = (<Icon name="card-giftcard" size={26} color="#9F9F9F" style={[styles.drawerListIcon, { paddingLeft: 2 }]} />);
@@ -106,13 +113,13 @@ class Drawer extends Component {
 function mapStateToProps(state) {
 
 	return {
-		currentUser: state.shared.currentUser
+		currentUser: state.shared.currentUser || {}
 	};
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators(isUser, dispatch)
+		isUser: bindActionCreators(isUser, dispatch)
 	};
 }
 
