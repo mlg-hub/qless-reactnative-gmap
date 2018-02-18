@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as mapActions from '../../redux/actions/mapAction';
-import MapComponent from '../../components/MapScreen/MapComponent';
-import FindPlaceComponent from '../../components/MapScreen/FindPlaceComponent';
-import ResultPlacesComponent from '../../components/MapScreen/ResultPlacesComponent';
-import FabComponent from '../../components/MapScreen/FabComponent';
+import MapComponent from '../../components/Seeker/MapScreen/MapComponent';
+import FindPlaceComponent from '../../components/Seeker/MapScreen/FindPlaceComponent';
+import ResultPlacesComponent from '../../components/Seeker/MapScreen/ResultPlacesComponent';
+import FabComponent from '../../components/Seeker/MapScreen/FabComponent';
 
 class MapScreen extends Component {
 
@@ -97,7 +97,7 @@ MapScreen.navigatorStyle = {
 	navBarButtonColor: 'white'
 };
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
 	const { places, selectedPlaceName } = state.seeker;
 	return {
 		places: places || [],

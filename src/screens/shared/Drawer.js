@@ -39,17 +39,27 @@ class Drawer extends Component {
 	}
 
 	_resetTo(title) {
-		this.props.navigator.resetTo({
-			screen: 'qless.MapScreen',
-			title,
-			leftButtons: [
-				{
-					id: 'sideMenu'
-				}
-			],
-			animationType: 'slide-horizontal',
-		});
-	}
+			this.props.navigator.resetTo({
+				screen: 'qless.GMapScreen',
+				title,
+				leftButtons: [
+					{
+						id: 'sideMenu'
+					}
+				],
+				animationType: 'slide-horizontal',
+			});
+		}
+		// this.props.navigator.resetTo({
+		// 		screen: 'qless.MapScreen',
+		// 		title,
+		// 		leftButtons: [
+		// 			{
+		// 				id: 'sideMenu'
+		// 			}
+		// 		],
+		// 		animationType: 'slide-horizontal',
+		// });}
 
 	_openPage(user) {
 		// const $this = this;
