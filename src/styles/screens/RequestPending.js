@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 
 	subContainer: {
 		flexWrap: 'wrap',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 
 	btnStyle:{

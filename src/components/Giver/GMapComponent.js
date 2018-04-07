@@ -24,23 +24,37 @@ class GMapComponent extends Component {
 		};
 	}
 	
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.userPosition.latitude) {
-	// 		this.setState({ loading: false, region: nextProps.userPosition });
-	// 	}
-	// }
-
-	_handleTheRequest(){
-		this.props.handleTheRequest();
+	componentWillReceiveProps(nextProps) {
+		// 
+		console.log('gmapComponent will receive props', nextProps);
 	}
 
-	_showAlert(){
+
+	_handleTheRequest(requestID) {
+		 this.props.handleTheRequest(requestID);
+	}
+
+	_renderMarker() {
+		const requests = this.props.requests;
+		return requests.map((req) => {
+			const coords = { latitude: req.latitude, longitude: req.longitude };
+			return (
+				<Marker.Animated
+					key={req._id} 
+					coordinate={coords}
+					onPress={() => this._showAlert(req._id)}
+				/>
+			);
+		});
+	}
+
+	_showAlert(requestID) {
 		Alert.alert(
 			'Activity feedback',
-			'Mlg has requested to get current activity feedback on Nakumatt lifestyle',
+			'Someone has requested for current activity information',
 			[
 				{ text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-				{ text: 'I\'am on it', onPress: () => this._handleTheRequest() }
+				{ text: 'I\'am on it', onPress: () => this._handleTheRequest(requestID) }
 			]
 		);
 	}
@@ -69,11 +83,7 @@ class GMapComponent extends Component {
 						style={styles.map}
 						region={region}
 					>
-						<Marker.Animated 
-							coordinate={region}
-							onPress={() => this._showAlert()}
-						/>
-					
+						{this._renderMarker()}
 					</Animated>
 				</View>
 			);

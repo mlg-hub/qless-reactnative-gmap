@@ -6,7 +6,8 @@ import Drawer from './screens/shared/Drawer';
 import RequestPending from './screens/seeker/RequestPending';
 import GMapScreen from './screens/giver/GMapScreen';
 import FeedBackPending from './screens/giver/FeedBackPending';
-
+import RequestsList from './screens/seeker/RequestsList';
+import GetDataStored from './screens/seeker/GetDataStored';
 
 export function registerScreens(store, Provider) {
 	Navigation.registerComponent('qless.MapScreen', () => MapScreen, store, Provider);
@@ -15,6 +16,7 @@ export function registerScreens(store, Provider) {
 	Navigation.registerComponent('qless.GMapScreen', () => GMapScreen, store, Provider);
 	Navigation.registerComponent('qless.FeedBackPending', () => FeedBackPending, store, Provider);
 	Navigation.registerComponent('qless.Drawer', () => Drawer, store, Provider);
-	
-	// Navigation.registerComponent('movieapp.Drawer', () => Drawer);
+	Navigation.registerComponent('qless.RequestList', () => RequestsList, store, Provider);
+	// Navigation.registerComponent('movieapp.Drawer', () => Drawer);'qless.GetDataStored'
+	Navigation.registerComponent('qless.GetDataStored', () => GetDataStored, store, Provider);	
 }

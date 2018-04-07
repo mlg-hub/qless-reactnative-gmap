@@ -12,7 +12,7 @@ import styles from '../../styles/screens/RequestPending';
 
 class RequestPending extends Component {
 
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
 			confirmed: false,
@@ -33,41 +33,51 @@ class RequestPending extends Component {
 		if (nextProps.requestReponseInfo) {
 			this.setState({ infosReceived: true }, () => {
 				$this.props.navigator.setTitle({
-					title: 'Reponse feedback'
+					title: 'Activity feedback'
 				});
 			});
 		}
 	}
 
 	_renderSpinner() {
-		if (!this.state.confirmed) {
-			return (
-				<View>
-					<Spinner isVisible style={{ marginBottom: 40, marginTop: 30 }} size={150} type="Pulse" color="#94bcfc" />
-					<Text style={styles.text}> ...Waiting for an assistance confirmation </Text>
-				</View>
-			);
-		}
 		return (
+			this.state.confirmed ?
 				<View>
 					<Spinner isVisible style={{ marginBottom: 40, marginTop: 30 }} size={150} type="DoubleBounce" color="#94bcfc" />
 					<Text> Request confirmed! </Text>
 					<Text style={styles.text}> ...Waiting for activity reponse feedback! </Text>
+				</View> :
+				<View style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+					<Spinner isVisible style={{ marginLeft: 50, marginBottom: 40, marginTop: 30 }} size={150} type="Pulse" color="#94bcfc" />
+					<Text style={styles.text}> ...Waiting for an assistance confirmation </Text>
 				</View>
-			);
+		);
 	}
 	_renderView() {
-		const { placeName, activity } = this.props.requestRespInfo;
-		if (!this.state.infosReceived) {
-			this._renderSpinner();
-		}
+		
 		return (
-			<View>
-				<Text>Place Name : {placeName}</Text>
-				<Text>Assisted by: {this.props.assistantInfo.name} </Text>
-				<Text>Activity: {activity}</Text>
-			</View>
+			this.state.infosReceived ?
+						<View>
+		 					<Text>Place Name : 'momo' </Text>
+		 					<Text>Assisted by: 'momo' </Text>
+		 					<Text>Activity: busy </Text>
+						</View> :
+						this._renderSpinner()
 		);
+		
+			
+		
+
+		// if (this.state.infosReceived === true) {
+		// 	const { placeName, activity } = this.props.requestRespInfo;
+		// 			return (
+		// 				<View>
+		// 					<Text>Place Name : {placeName}</Text>
+		// 					<Text>Assisted by: {this.props.assistantInfo} </Text>
+		// 					<Text>Activity: {activity}</Text>
+		// 				</View>
+		// 			);
+		// }
 	}
 
 	render() {
@@ -94,12 +104,15 @@ RequestPending.propTypes = {
 };
 
 function mapStateToProps(state) {
-	const { requestConfirmation, requestReponseInfo } = state.giver || null;
-	return {
-		requestConfID: requestConfirmation.requestID || null,
-		assistantInfo: requestConfirmation.assistantInfo || null,
-		requestRespInfo: requestReponseInfo
-	};
+	// const { currentRequestConfirmed } = state.seeker || {};
+	if (state.seeker.currentRequestConfirmed) {
+		return {
+		requestConfID: state.seeker.currentRequestConfirmed.requestID,
+		assistantInfo: state.seeker.currentRequestConfirmed.assistantInfo,
+		requestRespInfo: state.seeker.requestReponseInfo
+		};
+	}
+	return {};	
 }
 
 function mapDispatchToProps(dispatch) {

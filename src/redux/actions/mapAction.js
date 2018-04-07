@@ -1,5 +1,5 @@
 import RNGooglePlaces from 'react-native-google-places';
-// import axios from 'axios';
+import axios from 'axios';
 import * as types from './types/mapActionsTypes';
 
 
@@ -23,7 +23,7 @@ export function storeUserPosition(userPosition) {
 export const getGooglePlaces = (place) => async (dispatch) => {
 	
 	try {
-		const placesResults = await RNGooglePlaces.getAutocompletePredictions(place, { country: "KE"});
+		const placesResults = await RNGooglePlaces.getAutocompletePredictions(place, { country: "BI"});
 		dispatch({ type: types.GET_GOOGLE_PLACES, payload: placesResults });
 	} catch (e) {
 		console.log(e.message);
@@ -32,9 +32,13 @@ export const getGooglePlaces = (place) => async (dispatch) => {
 
 export const getPlaceLocation = (placeID) => async (dispatch) => {
 	try {
+			//with the submitted place id make an api request
+		const API_CALL = 'https://arcane-mesa-47319.herokuapp.com/api/seeking/place';
 		const placeLocation = await RNGooglePlaces.lookUpPlaceByID(placeID);
+		const planceInfo = await axios.get(`${API_CALL}/${placeID}`);
 			dispatch({ type: types.EMPTY_SEARCH });
 			dispatch({ type: types.GET_PLACE_LOCATION, payload: placeLocation });
+			dispatch({ type: types.GET_FROM_THE_CROWD, payload: planceInfo });
 	} catch (e) {
 		console.log(e.message);
 	}
@@ -51,8 +55,10 @@ export const requestPlaceInfo = () => async (dispatch, store) => {
 			userName: types.USER_ID,
 			address: selectedPlace.address,
 			name: selectedPlace.name,
+			placeID: selectedPlace.placeID,
 			latitude: selectedPlace.latitude,
-			longitude: selectedPlace.longitude
+			longitude: selectedPlace.longitude,
+			status: 'pending'
 		}
 	};
 

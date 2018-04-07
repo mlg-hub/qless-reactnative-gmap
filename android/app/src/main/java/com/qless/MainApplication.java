@@ -11,8 +11,6 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
-
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,10 +44,12 @@ public class MainApplication extends NavigationApplication {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
             new MapsPackage(),
+
             new VectorIconsPackage(),
             new RNGooglePlacesPackage(),
             new LinearGradientPackage(),
             new RNSpinkitPackage()
+
     );
   }
 

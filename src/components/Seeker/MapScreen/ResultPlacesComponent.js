@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { 
 	View, 
 	StyleSheet, 
 	Dimensions,
 	FlatList
 	} from 'react-native';
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const width = Dimensions.get('window').width;
 
 const ResultPlacesComponent = ({
 	placesResults,
- 	getPlaceLocation, 
+	getPlaceLocation, 
 	storeSelectedPlaceName 
 	}) => {
-
 	function handlePlaceLocation(place_id, place_name){
 		// dispatch an action to handle the placeID
 		getPlaceLocation(place_id);
-		storeSelectedPlaceName(place_name)
+		storeSelectedPlaceName(place_name);
 	}
 	return (
 		<View style={styles.resultList}>

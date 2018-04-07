@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -11,6 +11,40 @@ import FabComponent from '../../components/Seeker/MapScreen/FabComponent';
 
 class MapScreen extends Component {
 
+	constructor() {
+		super();
+		this.state = {
+			placeInfoArray: [],
+			auth: false,
+			username: ""
+		};
+		// this.setState({ placeInfoArray: [] });
+	}
+	async componentWillMount() {
+		console.log('props called', this.props.username);
+		// await AsyncStorage.removeItem('userName');
+		const auth = await AsyncStorage.getItem('userName');
+		console.log('the auth', auth);
+		if (this.props.username) {
+			console.log('props called', this.props.username);
+			this.setState({ username: this.props.username, auth: true }, () => console.log(this.state));
+		}
+		if (auth !== null) {
+			console.log('auth called', auth);
+			this.setState({ auth: true, username: auth });
+		} else {
+			this.props.navigator.resetTo({
+				screen: 'qless.AuthScreen',
+				title: 'Add your username'
+			});
+		}
+	}
+	componentWillReceiveProps(nextProps) {
+
+		if (nextProps.placeInfo.data) {
+			this.setState({ placeInfoArray: nextProps.placeInfo.data });
+		}
+	}
 	_renderResultPlaceComponent() {
 		const {
 			places,
@@ -41,10 +75,24 @@ class MapScreen extends Component {
 						}
 					});
 	}
+	_goToCrowd() {
+		const feedback = this.state.placeInfoArray;
+		this.props.navigator.showModal({
+			screen: 'qless.GetDataStored',
+			title: 'Data from Crowd',
+			passProps: {
+				feedback
+			}
+		});
+	}
 	_renderFabComponent() {
-		if(this.props.selectedLatLong.latitude) {
+		if (this.props.selectedLatLong.latitude) {
 			return (
-				<FabComponent onPressAction={() => this._goToRequestPage()} />
+				<FabComponent 
+					onPressAction={() => this._goToRequestPage()}
+					placeInfo={this.state.placeInfoArray}
+					onCrowd={() => this._goToCrowd()}
+				/>
 			);
 		}
 	}
@@ -62,8 +110,12 @@ class MapScreen extends Component {
 		}
 	}
 
-	_renderSeekerView() {
-				const { 
+	 _renderSeekerView() {
+			console.log('la state', this.state);
+			const auth = AsyncStorage.getItem('userName');
+		console.log('the auth', auth);
+			if (this.state.auth) {
+					const { 
 				actions: { storeUserPosition },
 				selectedLatLong
 				} = this.props;
@@ -77,7 +129,10 @@ class MapScreen extends Component {
 					{this._renderResultPlaceComponent()}
 					{this._renderFabComponent()}
 				</View>
-			);	
+			);
+		} else {
+			return null;
+		}
 	}
 
 
@@ -104,7 +159,8 @@ function mapStateToProps(state) {
 		selectedLatLong: state.seeker.selectedPlace ? state.seeker.selectedPlace : {},
 		selectedPlaceName,
 		userPosition: state.shared.userPosition,
-		currentUser: state.shared.currentUser || {}
+		currentUser: state.shared.currentUser || {},
+		placeInfo: state.seeker.placeFeedBack ? state.seeker.placeFeedBack : []
 	};
 }
 function mapDispatchToProps(dispatch) {

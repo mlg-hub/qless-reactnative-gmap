@@ -40,8 +40,19 @@ class MapComponent extends Component {
 				this.props.storeUserPosition({ latitude, longitude });
 			},
 			(error) => console.log(error.message),
-			{ enableHighAccuracy: true, timeout: 50000, maximumAge: 2000 }
+			{ enableHighAccuracy: true, timeout: 500000, maximumAge: 3000 }
 		);
+		// Geolocation.getCurrentPosition(
+		// 	(position) => {
+		// 		this.setState({ region: position.coords });
+		// 		const { latitude, longitude } = this.state.region;
+		// 		this.props.storeUserPosition({ latitude, longitude });
+		// 	},
+		// 	(error) => {
+		// 		console.log(error.code, error.message);
+		// 	},
+		// 	{ enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+		// 	);
 	}
 
 	_onRegionChange(region) {
@@ -71,7 +82,11 @@ class MapComponent extends Component {
 						style={styles.map}
 						region={region}
 						onRegionChange={(reg) => this._onRegionChange(reg)}
+					>
+					<Marker.Animated
+					coordinate={region}
 					/>
+					</Animated>
 				</View>
 			);
 		// when the latitude is not set yet	

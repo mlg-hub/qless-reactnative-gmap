@@ -3,7 +3,7 @@ import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 
 import { registerScreens } from './screens';
-import configureStore from './redux/store/configureStore'
+import configureStore from './redux/store/configureStore';
 
 const store = configureStore();
 

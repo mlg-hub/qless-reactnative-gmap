@@ -1,43 +1,75 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
-const FabComponent = ({ onPressAction }) => {
+class FabComponent extends Component {
 
-	function handleOnPress() {
-		onPressAction();
+	handleOnPress() {
+		this.props.onPressAction();
 	}
-	return (
-		<View >
+	gotoCrowd() {
+		this.props.onCrowd();
+	}
+	renderCrowd() {
+		console.log(this.props.placeInfo, 'this is the place info');
+		if (this.props.placeInfo.length > 0) {
+			return (
+				<Button 
+					buttonStyle={styles.btnStyle2}
+					textStyle={styles.btnText}
+					onPress={() => this.gotoCrowd()} 
+					containerStyle={styles.container}
+					title="Get From the crowd"
+				/>
+			);
+		}
+		return null;
+	}
+
+	render() {
+		return (
+		<View style={styles.fabContainer}>
+				{this.renderCrowd()}
 			<Button 
-				buttonStyle={styles.fabContainer}
+				buttonStyle={styles.btnStyle}
 				textStyle={styles.btnText}
-				onPress={handleOnPress} 
+				onPress={() => this.handleOnPress()} 
 				containerStyle={styles.container}
 				title="Get Info"
 			/>	
-			</View>
+		</View>
 	);
-
+	}	
 }
-
 const styles = StyleSheet.create({
 		fabContainer: {
-			alignItems: 'center',
-			justifyContent: 'center',
+			flex: 1,
+			flexDirection: 'row',
 			position: 'absolute',
-			backgroundColor: '#056eaa',		
-			borderColor: "#02a2ff",
+			justifyContent: 'space-between',
+			backgroundColor: 'transparent',
+			padding: 0,	
+			bottom: 50
+		},
+		btnStyle: {
+			borderColor: '#02a2ff',
+			backgroundColor: 'black',
 			borderWidth: 1,
-			height:40,
-			width:120,
-			borderRadius: 40,
-			bottom: 50,
-			right: 20,
+			height: 50,
+			width: 120,
+			borderRadius: 20
+		},
+		btnStyle2: {
+			backgroundColor: 'black',
+			borderColor: 'green',
+			borderWidth: 1,
+			height: 50,
+			width: 150,
+			borderRadius: 20
 		},
 		btnText: {
 			//  fontWeight: "700"
-			color: '#c7dce8'
+			color: '#fff'
 		},
 		container: {
 			shadowColor: "red",
