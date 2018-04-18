@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MapView, { Animated, AnimatedRegion, Marker} from 'react-native-maps';
-import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { View, PermissionsAndroid,StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATION = width / height;
@@ -31,28 +31,37 @@ class MapComponent extends Component {
 			}
 		}	
 	}
-	_getUserPosition() {
+	async _getUserPosition() {
 		console.log('getting the user position ready!');
 		
-		navigator.geolocation.getCurrentPosition((position) => {
-				this.setState({ region: position.coords });
-				const { latitude, longitude } = this.state.region;
-				this.props.storeUserPosition({ latitude, longitude });
-			},
-			(error) => console.log(error.message),
-			{ enableHighAccuracy: true, timeout: 500000, maximumAge: 3000 }
-		);
-		// Geolocation.getCurrentPosition(
-		// 	(position) => {
+		// navigator.geolocation.getCurrentPosition((position) => {
 		// 		this.setState({ region: position.coords });
 		// 		const { latitude, longitude } = this.state.region;
 		// 		this.props.storeUserPosition({ latitude, longitude });
 		// 	},
-		// 	(error) => {
-		// 		console.log(error.code, error.message);
-		// 	},
-		// 	{ enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-		// 	);
+		// 	(error) => console.log(error.message),
+		// 	{ enableHighAccuracy: true, timeout: 500000, maximumAge: 3000 }
+		// );
+		const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+                        title: 'App needs to access your location',
+                        message: 'App needs access to your location ' +
+                        'so we can let our app be even more awesome.'
+                        }
+                    );
+     if (granted) {
+
+        FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
+// Set options.
+        FusedLocation.setLocationPriority(FusedLocation.Constants.BALANCED);
+        FusedLocation.setLocationInterval(20000);
+        FusedLocation.setFastestLocationInterval(15000);
+        FusedLocation.setSmallestDisplacement(10);
+        // Get location once.
+        const location = await FusedLocation.getFusedLocation();
+        this.setState({region: location});
+		const { latitude, longitude } = this.state.region;
+		this.props.storeUserPosition({ latitude, longitude });
 	}
 
 	_onRegionChange(region) {

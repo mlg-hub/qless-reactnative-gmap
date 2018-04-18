@@ -48,7 +48,8 @@ public class MainApplication extends NavigationApplication {
             new VectorIconsPackage(),
             new RNGooglePlacesPackage(),
             new LinearGradientPackage(),
-            new RNSpinkitPackage()
+            new RNSpinkitPackage(),
+            new FusedLocationPackage()
 
     );
   }
