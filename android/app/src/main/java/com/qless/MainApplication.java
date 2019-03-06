@@ -11,6 +11,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
+import com.mustansirzia.fused.FusedLocationPackage;
 import java.util.Arrays;
 import java.util.List;
 

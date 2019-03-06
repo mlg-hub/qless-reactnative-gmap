@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MapView, { Animated, AnimatedRegion, Marker} from 'react-native-maps';
-import { View, PermissionsAndroid,StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { View, PermissionsAndroid, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import FusedLocation from 'react-native-fused-location';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATION = width / height;
@@ -49,7 +50,7 @@ class MapComponent extends Component {
                         'so we can let our app be even more awesome.'
                         }
                     );
-     if (granted) {
+     if (granted){
 
         FusedLocation.setLocationPriority(FusedLocation.Constants.HIGH_ACCURACY);
 // Set options.
@@ -59,9 +60,10 @@ class MapComponent extends Component {
         FusedLocation.setSmallestDisplacement(10);
         // Get location once.
         const location = await FusedLocation.getFusedLocation();
-        this.setState({region: location});
+        this.setState({ region: location });
 		const { latitude, longitude } = this.state.region;
 		this.props.storeUserPosition({ latitude, longitude });
+	}
 	}
 
 	_onRegionChange(region) {

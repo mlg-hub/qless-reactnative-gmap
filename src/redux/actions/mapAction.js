@@ -23,7 +23,7 @@ export function storeUserPosition(userPosition) {
 export const getGooglePlaces = (place) => async (dispatch) => {
 	
 	try {
-		const placesResults = await RNGooglePlaces.getAutocompletePredictions(place, { country: "BI"});
+		const placesResults = await RNGooglePlaces.getAutocompletePredictions(place, { country: "KE"});
 		dispatch({ type: types.GET_GOOGLE_PLACES, payload: placesResults });
 	} catch (e) {
 		console.log(e.message);

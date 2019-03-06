@@ -151,9 +151,15 @@ dependencies {
 //    compile("com.android.support:appcompat-v7:27.0.1") {
 //        force = true
 //    }
-    compile 'com.google.android.gms:play-services-base:11.6.2'
-    compile 'com.google.android.gms:play-services-places:11.6.2'
-    compile 'com.google.android.gms:play-services-location:11.6.2'
+    compile ('com.google.android.gms:play-services-base:11.6.2'){
+        force=true
+    }
+    compile ('com.google.android.gms:play-services-places:11.6.2'){
+		force=true
+	}
+    compile ('com.google.android.gms:play-services-location:11.6.2'){
+		force=true
+	}
     compile project(':react-native-linear-gradient')
     compile project(':react-native-spinkit')
     compile project(':react-native-fused-location')
